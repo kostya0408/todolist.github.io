@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="todolist.css">
+</head>
+<body>
+<video autoplay muted loop id="bg-video">
+    <source src="halloween.mp4" type="video/mp4">
+</video>
+
+<div class="head">
+    <img src="pumpkin.png" alt="galk" width="45px" height="45px">
+    <h1 style="text-align: center;"><b> To-Do List </b></h1>
+</div>
+<header class="header">
+
+    <input type="text" id="addTaskField">
+    <button id="openPopup" class="openPopup"> Add</button>
+
+    <div class="dropdown">
+        <button id="dateBtn">Date</button>
+
+        <div class="dropdown-content">
+            <button id="up">Up</button>
+            <button id="down">Down</button>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button id="statusBtn">Status</button>
+
+        <div class="dropdown-content">
+            <button id="stUp">Up</button>
+            <button id="stDown">Down</button>
+        </div>
+    </div>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <button id="closePopup" class="close">×</button>
+
+            <input type="date" id="addTaskTime">
+            <div class="radio-button" style="display:flex; gap:20px;">
+
+                <label>
+                    <input type="radio" id="low" name="priority" value="low">
+                    Low
+                </label>
+
+                <label>
+                    <input type="radio"  id="medium" name="priority" value="medium" >
+                    Medium
+                </label>
+
+                <label>
+                    <input type="radio" id="high" name="priority" value="high">
+                    High
+                </label>
+
+
+                <button id = "addTaskButton" class="addTaskButton">Add</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!--    <button id="addSortButton">Sort</button>-->
+</header>
+<div class="main">
+    <ol id="todolists">
+
+    </ol>
+
+
+</div>
+<script src="todolist.js" defer></script>
+</body>
+</html>
