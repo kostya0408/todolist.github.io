@@ -11,10 +11,16 @@ const mediumCheck = document.getElementById('medium')
 const highCheck = document.getElementById('high')
 
 
+var mouseclick = new Audio();
+mouseclick.src = "mouseClick.mp3";
 
+const buttons = document.querySelectorAll("button");
 
+buttons.forEach(button => {
+    button.onmousedown = () => mouseclick.play();
+});
 
-button.addEventListener("click", () => {
+    button.addEventListener("click", () => {
     const text = input.value.trim();
     const time = inputTime.value;
      const check = new Date(time);
@@ -89,9 +95,10 @@ button.addEventListener("click", () => {
         li.appendChild(buttonSpan);
 
         taskslist.appendChild(li);
+        popup.classList.remove("is-open");
 
         input.value = "";
-        inputTime.value = "";
+        inputTime.value = now;
     }
 
 
@@ -99,7 +106,10 @@ button.addEventListener("click", () => {
 const popup = document.getElementById("popup");
 
 document.getElementById("openPopup").addEventListener("click", () => {
-    popup.classList.add("is-open");
+    const text = input.value.trim();
+    if(text !== "") {
+        popup.classList.add("is-open");
+    }
 });
 
 
