@@ -40,22 +40,23 @@
         <div class="popup-content">
             <button id="closePopup" class="close">×</button>
 
+
             <input type="date" id="addTaskTime" class="addTaskTime" placeholder="Enter time">
             <div class="radio-button" style="display:flex; gap:20px;">
 
                 <label>
                     <input type="radio" id="low" name="priority" value="low">
-                    👻
+                    Low
                 </label>
 
                 <label>
                     <input type="radio"  id="medium" name="priority" value="medium" >
-                    👻👻
+                    Medium
                 </label>
 
                 <label>
                     <input type="radio" id="high" name="priority" value="high">
-                    👻👻👻
+                    High
                 </label>
 
 
@@ -64,6 +65,37 @@
             <button id = "addTaskButton" class="addTaskButton">Add</button>
         </div>
     </div>
+
+    <div id="popupE" class="popupE">
+        <div class="popup-contentE">
+            <button id="closePopupE" class="closeE">×</button>
+
+            <input type="text" id="addTaskFieldE" placeholder="Enter task...">
+            <input type="date" id="addTaskTimeE" class="addTaskTimeE" placeholder="Enter time">
+            <div class="radio-buttonE" style="display:flex; gap:20px;">
+
+                <label>
+                    <input type="radio" id="lowE" name="priority" value="low">
+                    Low
+                </label>
+
+                <label>
+                    <input type="radio"  id="mediumE" name="priority" value="medium" >
+                    Medium
+                </label>
+
+                <label>
+                    <input type="radio" id="highE" name="priority" value="high">
+                    High
+                </label>
+
+
+
+            </div>
+            <button id = "saveButton" class="saveButton">Save</button>
+        </div>
+    </div>
+
 
     <!--    <button id="addSortButton">Sort</button>-->
 </header>

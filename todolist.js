@@ -9,7 +9,12 @@ const sortStatusDown = document.getElementById('stDown')
 const lowCheck = document.getElementById('low')
 const mediumCheck = document.getElementById('medium')
 const highCheck = document.getElementById('high')
-
+const inputEdit = document.getElementById("addTaskFieldE");
+const timeEdit = document.getElementById("addTaskTimeE");
+const lowEdit = document.getElementById("lowE");
+const mediumEdit = document.getElementById("mediumE");
+const highEdit = document.getElementById("highE");
+const saveButton = document.getElementById('saveButton')
 
 var mouseclick = new Audio();
 mouseclick.src = "mouseClick.mp3";
@@ -20,11 +25,37 @@ buttons.forEach(button => {
     button.onmousedown = () => mouseclick.play();
 });
 
+
+
+
+const popupE = document.getElementById("popupE");
+
+
+
+
+document.getElementById("closePopupE").addEventListener("click", () => {
+    popupE.classList.remove("is-open");
+});
+
+popupE.addEventListener("click", (event) => {
+
+    if (event.target === popupE) {
+        popupE.classList.remove("is-open");
+    }
+});
+
+
+
+
+
+
+
     button.addEventListener("click", () => {
     const text = input.value.trim();
     const time = inputTime.value;
      const check = new Date(time);
     const now = new Date();
+
 
     // if (text !== "") {
     //     const li = document.createElement("li");
@@ -80,6 +111,40 @@ buttons.forEach(button => {
 
         }
 
+        const editSpan = document.createElement("button")
+        editSpan.textContent = "👻";
+        editSpan.classList.add("buttonEdit");
+
+        editSpan.addEventListener("click", () =>{
+            popupE.classList.add("is-open");
+
+            inputEdit.value = textSpan.textContent;
+            timeEdit.value = li.dataset.date;
+        });
+
+        saveButton.addEventListener("click", () => {
+            textSpan.textContent = inputEdit.value;
+
+            li.dataset.date = timeEdit.value;
+
+            timeSpan.textContent =
+                timeEdit.value.split("-").reverse().join(".");
+
+            if (lowEdit.checked) {
+                li.dataset.priority = "low";
+            }
+
+            if (mediumEdit.checked) {
+                li.dataset.priority = "medium";
+            }
+
+            if (highEdit.checked) {
+                li.dataset.priority = "high";
+            }
+
+            popupE.classList.remove("is-open");
+        });
+
 
         const buttonSpan = document.createElement("button")
         buttonSpan.textContent = "Delete";
@@ -92,6 +157,7 @@ buttons.forEach(button => {
 
         li.appendChild(taskInfo);
         li.appendChild(timeSpan);
+        li.appendChild(editSpan)
         li.appendChild(buttonSpan);
 
         taskslist.appendChild(li);
@@ -103,6 +169,9 @@ buttons.forEach(button => {
 
 
 });
+
+
+
 const popup = document.getElementById("popup");
 
 document.getElementById("openPopup").addEventListener("click", () => {
@@ -123,6 +192,15 @@ popup.addEventListener("click", (event) => {
         popup.classList.remove("is-open");
     }
 });
+
+
+
+
+
+
+
+
+
 
 sortDateUp.addEventListener("click", () => {
     const items = document.querySelectorAll("ol li");
