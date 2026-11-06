@@ -15,162 +15,156 @@ const lowEdit = document.getElementById("lowE");
 const mediumEdit = document.getElementById("mediumE");
 const highEdit = document.getElementById("highE");
 const saveButton = document.getElementById('saveButton')
+const buttons = document.querySelectorAll("button");
+const popupE = document.getElementById("popupE");
+
+let editIndex = null;
+
 
 var mouseclick = new Audio();
 mouseclick.src = "mouseClick.mp3";
 
-const buttons = document.querySelectorAll("button");
+
 
 buttons.forEach(button => {
     button.onmousedown = () => mouseclick.play();
 });
 
+function getTodos() {
+    return JSON.parse(
+        localStorage.getItem("demo_todos_uk") || "[]"
+    );
+}
 
+function saveTodos(todos) {
+    localStorage.setItem(
+        "demo_todos_uk",
+        JSON.stringify(todos)
+    );
 
+    render();
+}
 
-const popupE = document.getElementById("popupE");
+function deleteTodo(index) {
+    const todos = getTodos();
 
+    todos.splice(index, 1);
 
+    saveTodos(todos);
+}
 
+function render() {
+    taskslist.innerHTML = "";
 
-document.getElementById("closePopupE").addEventListener("click", () => {
-    popupE.classList.remove("is-open");
-});
+    const todos = getTodos();
 
-popupE.addEventListener("click", (event) => {
+    todos.forEach((todo, index) => {
 
-    if (event.target === popupE) {
-        popupE.classList.remove("is-open");
-    }
-});
-
-
-
-
-
-
-
-    button.addEventListener("click", () => {
-    const text = input.value.trim();
-    const time = inputTime.value;
-     const check = new Date(time);
-    const now = new Date();
-
-
-    // if (text !== "") {
-    //     const li = document.createElement("li");
-    //     li.textContent = text;
-    //     taskslist.appendChild(li);
-    //     input.value = " ";
-    // }
-    if (text !== "" && time !== "" && check > now) {
         const li = document.createElement("li");
+        li.dataset.date = todo.date;
+        li.dataset.priority = todo.priority;
+
         const taskInfo = document.createElement("div");
         taskInfo.classList.add("taskInfo");
 
+        const textSpan = document.createElement("span");
+        textSpan.textContent = todo.text;
+        textSpan.classList.add("taskName");
 
-        const textSpan = document.createElement("span")
-        textSpan.textContent = text;
-        textSpan.classList.add("taskName")
-        taskInfo.appendChild(textSpan);
+        const prioritySpan = document.createElement("span");
+        prioritySpan.textContent = todo.priority;
 
-
-
-
-        const timeSpan = document.createElement("span")
-        const reversed = time.split('-').reverse().join('.');
-        timeSpan.textContent = reversed;
-        li.dataset.date = time;
-        timeSpan.classList.add("deadline")
-
-
-
-
-        if (document.getElementById('low').checked === true) {
-            li.dataset.priority = "low";
-            const prioritySpan = document.createElement("span")
-            prioritySpan.textContent = "low";
-            prioritySpan.classList.add("spanLow")
-            taskInfo.appendChild(prioritySpan);
-
+        if (todo.priority === "low") {
+            prioritySpan.classList.add("spanLow");
         }
-        if (document.getElementById('medium').checked === true) {
-            li.dataset.priority = "medium";
-            const prioritySpan = document.createElement("span")
-            prioritySpan.textContent = "medium";
-            prioritySpan.classList.add("spanMedium")
-            taskInfo.appendChild(prioritySpan);
 
+        if (todo.priority === "medium") {
+            prioritySpan.classList.add("spanMedium");
         }
-        if (document.getElementById('high').checked === true) {
-            li.dataset.priority = "high";
-            const prioritySpan = document.createElement("span")
-            prioritySpan.textContent = "high";
-            prioritySpan.classList.add("spanHigh")
-            taskInfo.appendChild(prioritySpan);
 
+        if (todo.priority === "high") {
+            prioritySpan.classList.add("spanHigh");
         }
+
+        const timeSpan = document.createElement("span");
+        timeSpan.textContent = todo.date.split("-").reverse().join(".");
+        timeSpan.classList.add("deadline");
 
         const editSpan = document.createElement("button")
         editSpan.textContent = "👻";
         editSpan.classList.add("buttonEdit");
 
-        editSpan.addEventListener("click", () =>{
+        const deleteSpan = document.createElement("button");
+        deleteSpan.textContent = "Delete";
+        deleteSpan.classList.add("buttonDelete");
+
+        editSpan.addEventListener("click", () => {
+
+            editIndex = index;
+
+            inputEdit.value = todo.text;
+            timeEdit.value = todo.date;
+
+            if (todo.priority === "low") {
+                lowEdit.checked = true;
+            }
+
+            if (todo.priority === "medium") {
+                mediumEdit.checked = true;
+            }
+
+            if (todo.priority === "high") {
+                highEdit.checked = true;
+            }
+
             popupE.classList.add("is-open");
-
-            inputEdit.value = textSpan.textContent;
-            timeEdit.value = li.dataset.date;
         });
 
-        saveButton.addEventListener("click", () => {
-            textSpan.textContent = inputEdit.value;
-
-            li.dataset.date = timeEdit.value;
-
-            timeSpan.textContent =
-                timeEdit.value.split("-").reverse().join(".");
-
-            if (lowEdit.checked) {
-                li.dataset.priority = "low";
-            }
-
-            if (mediumEdit.checked) {
-                li.dataset.priority = "medium";
-            }
-
-            if (highEdit.checked) {
-                li.dataset.priority = "high";
-            }
-
-            popupE.classList.remove("is-open");
+        deleteSpan.addEventListener("click", () => {
+            deleteTodo(index);
         });
 
-
-        const buttonSpan = document.createElement("button")
-        buttonSpan.textContent = "Delete";
-        buttonSpan.classList.add("buttonDelete");
-
-
-        buttonSpan.addEventListener("click", () => {
-            li.remove();
-        });
+        taskInfo.appendChild(textSpan);
+        taskInfo.appendChild(prioritySpan);
 
         li.appendChild(taskInfo);
         li.appendChild(timeSpan);
-        li.appendChild(editSpan)
-        li.appendChild(buttonSpan);
+        li.appendChild(editSpan);
+        li.appendChild(deleteSpan);
 
         taskslist.appendChild(li);
+    });
+}
+button.addEventListener("click", () => {
+    const text = input.value.trim();
+    const time = inputTime.value;
+    const check = new Date(time);
+    const now = new Date();
+
+    const priority = document.querySelector(
+        'input[name="priority"]:checked'
+    );
+
+    if (text !== "" && time !== "" && check > now) {
+
+        const todos = getTodos();
+
+        todos.push({
+            text: text,
+            date: time,
+            priority: priority.value
+        });
+
+        saveTodos(todos);
+
         popup.classList.remove("is-open");
 
         input.value = "";
-        inputTime.value = now;
+        inputTime.value = "";
+
+
     }
-
-
 });
-
-
 
 const popup = document.getElementById("popup");
 
@@ -192,10 +186,33 @@ popup.addEventListener("click", (event) => {
         popup.classList.remove("is-open");
     }
 });
+saveButton.addEventListener("click", () => {
 
+    if (editIndex === null) return;
 
+    const todos = getTodos();
 
+    todos[editIndex].text = inputEdit.value;
+    todos[editIndex].date = timeEdit.value;
 
+    if (lowEdit.checked) {
+        todos[editIndex].priority = "low";
+    }
+
+    if (mediumEdit.checked) {
+        todos[editIndex].priority = "medium";
+    }
+
+    if (highEdit.checked) {
+        todos[editIndex].priority = "high";
+    }
+
+    saveTodos(todos);
+
+    popupE.classList.remove("is-open");
+
+    editIndex = null;
+});
 
 
 
@@ -254,12 +271,4 @@ sortStatusUp.addEventListener("click", () => {
     });
 
 });
-
-
-
-
-
-
-
-
-
+render();
